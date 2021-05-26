@@ -1,28 +1,17 @@
-import pygame, sys
 from piece import *
 
-playerColor = int(input("Enter 0 for white, 1 for black: "))
+class Game:
+    def __init__(self, playerColor):
+        self.pieces = dict()
+        for i in range(8,16):
+            self.pieces[i] = Pawn(-1, i, self)
+        for i in range(48,56):
+            self.pieces[i] = Pawn(1, i, self)
+        self.pieces[0] = Rook(-1, 0, self)
+        self.pieces[7] = Rook(-1, 7, self)
+        self.pieces[56] = Rook(1, 56, self)
+        self.pieces[63] = Rook(1, 63, self)
 
-pygame.init()
-
-LENGTH = 720
-BLOCK_LENGTH = LENGTH / 8
-
-screen = pygame.display.set_mode((LENGTH, LENGTH))
-pygame.display.set_caption("Chess 2.0")
-screen.fill([220,211,176])
-
-for i in range(8):
-    for j in range(8):
-        if (i + j) % 2 == 1:
-            screen.fill([65,125,20], pygame.Rect(j * BLOCK_LENGTH, i * BLOCK_LENGTH, BLOCK_LENGTH, BLOCK_LENGTH))
-
-pygame.display.update()
-
-
-
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+        self.playerColor = playerColor
+        self.lastMove = (None, -1, -1)
+        self.turn = 1
